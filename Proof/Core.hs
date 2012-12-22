@@ -1,19 +1,22 @@
 module Proof.Core where
 
 import Data.List (partition)
+
 import Proof.Matcher
 import Proof.Message.Format
 
 type Passed = [String]
 type Failed = [String]
-type Test = [String]
-type Suite = [[String]]
+type Suite = [String]
 
 expect :: (Show actual, Show expected) =>  actual -> Matcher actual expected -> expected -> String
 expect actual (failMessage, evaluator) expected
-	| passed    = "Passed"
-	| otherwise = "Failed: " ++ (format failMessage [("@expected@", show expected), ("@actual@", show actual)])
-		where passed = evaluator actual expected
+	| evaluator actual expected = "Passed"
+	| otherwise                 = "Failed: " ++
+		(format
+			failMessage
+			[("@expected@", show expected), ("@actual@", show actual)]
+		)
 
 printResults :: (Passed, Failed) -> IO()
 printResults (passed, failed) =
@@ -28,9 +31,9 @@ printResults (passed, failed) =
 			"Tests Run:\t" ++ (show (numPassed + numFailed))
 		]
 
-runTests :: [String] -> IO()
-runTests tests = (printResults . partition (=="Passed")) tests
-
 runSuite :: Suite -> IO()
-runSuite suite = (printResults.merge) $ map (partition (=="Passed")) suite
+runSuite suite = (printResults . partition (=="Passed")) suite
+
+runSuites :: [Suite] -> IO()
+runSuites suites = (printResults.merge) $ map (partition (=="Passed")) suites
 	where merge xs = foldl1 (\(p, f) (p', f') -> (p++p', f++f')) xs
