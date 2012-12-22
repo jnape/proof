@@ -1,7 +1,7 @@
 Proof
 =====
 
-Unit Testing framework for Haskell that doesn't suck
+Really simple unit testing in Haskell
 
 Example Usage:
 
