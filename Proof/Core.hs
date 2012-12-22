@@ -9,11 +9,11 @@ type Failed = [String]
 type Test = [String]
 type Suite = [[String]]
 
-expect :: (Show expected, Show actual) =>  actual -> Matcher expected actual -> expected -> String
+expect :: (Show actual, Show expected) =>  actual -> Matcher actual expected -> expected -> String
 expect actual (failMessage, evaluator) expected
 	| passed    = "Passed"
 	| otherwise = "Failed: " ++ (format failMessage [("@expected@", show expected), ("@actual@", show actual)])
-		where passed = evaluator expected actual
+		where passed = evaluator actual expected
 
 printResults :: (Passed, Failed) -> IO()
 printResults (passed, failed) =

@@ -19,6 +19,6 @@ substitute text substitution@(find, replace)
 format :: String -> [Substitution] -> String
 format ""    _ = ""
 format text [] = text
-format text (x:xs) = format (substitute text x) xs
+format text (substitution:substitutions) = format (substitute text substitution) substitutions
 
 		
