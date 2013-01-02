@@ -9,7 +9,6 @@ Example Usage:
 module Main where
 
 import Proof.Core
-import Proof.Matcher
 
 main :: IO ()
 main = runSuites
