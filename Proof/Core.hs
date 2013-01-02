@@ -1,8 +1,13 @@
-module Proof.Core where
+module Proof.Core (
+	expect,
+	runSuite,
+	runSuites,
+	module Proof.Matchers
+) where
 
 import Data.List (partition)
 
-import Proof.Matcher
+import Proof.Matchers
 import Proof.Message.Format
 
 type Passed = [String]
